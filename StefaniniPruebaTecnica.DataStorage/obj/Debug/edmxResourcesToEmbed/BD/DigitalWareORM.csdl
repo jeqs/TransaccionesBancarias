@@ -1,0 +1,79 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="OpheliaDBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="Cliente">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Nombre" Type="String" MaxLength="256" FixedLength="false" Unicode="false" />
+    <Property Name="Edad" Type="Int32" />
+    <NavigationProperty Name="Venta" Relationship="Self.FK_Venta_Cliente" FromRole="Cliente" ToRole="Venta" />
+  </EntityType>
+  <EntityType Name="Producto">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Nombre" Type="String" MaxLength="256" FixedLength="false" Unicode="false" />
+    <Property Name="Precio" Type="Decimal" Precision="18" Scale="3" />
+    <Property Name="Cantidad" Type="Int32" />
+    <NavigationProperty Name="Venta" Relationship="Self.FK_Venta_Producto" FromRole="Producto" ToRole="Venta" />
+  </EntityType>
+  <EntityType Name="Venta">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="ClienteId" Type="Int32" Nullable="false" />
+    <Property Name="ProductoId" Type="Int32" Nullable="false" />
+    <Property Name="Fecha" Type="DateTime" Nullable="false" Precision="0" />
+    <Property Name="Cantidad" Type="Int32" Nullable="false" />
+    <Property Name="SubTotal" Type="Decimal" Precision="18" Scale="3" Nullable="false" />
+    <NavigationProperty Name="Cliente" Relationship="Self.FK_Venta_Cliente" FromRole="Venta" ToRole="Cliente" />
+    <NavigationProperty Name="Producto" Relationship="Self.FK_Venta_Producto" FromRole="Venta" ToRole="Producto" />
+  </EntityType>
+  <Association Name="FK_Venta_Cliente">
+    <End Role="Cliente" Type="Self.Cliente" Multiplicity="1" />
+    <End Role="Venta" Type="Self.Venta" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Cliente">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Venta">
+        <PropertyRef Name="ClienteId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Venta_Producto">
+    <End Role="Producto" Type="Self.Producto" Multiplicity="1" />
+    <End Role="Venta" Type="Self.Venta" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Producto">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Venta">
+        <PropertyRef Name="ProductoId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="OpheliaDBEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="Cliente" EntityType="Self.Cliente" />
+    <EntitySet Name="Producto" EntityType="Self.Producto" />
+    <EntitySet Name="Venta" EntityType="Self.Venta" />
+    <AssociationSet Name="FK_Venta_Cliente" Association="Self.FK_Venta_Cliente">
+      <End Role="Cliente" EntitySet="Cliente" />
+      <End Role="Venta" EntitySet="Venta" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Venta_Producto" Association="Self.FK_Venta_Producto">
+      <End Role="Producto" EntitySet="Producto" />
+      <End Role="Venta" EntitySet="Venta" />
+    </AssociationSet>
+    <FunctionImport Name="ObtenerVentasPorAnio" ReturnType="Collection(OpheliaDBModel.VentasPorAnio)">
+      <Parameter Name="anio" Mode="In" Type="Int32" />
+    </FunctionImport>
+  </EntityContainer>
+  <ComplexType Name="VentasPorAnio">
+    <Property Type="String" Name="Producto" Nullable="true" MaxLength="256" />
+    <Property Type="Decimal" Name="TotalVendido" Nullable="true" Precision="38" Scale="3" />
+  </ComplexType>
+</Schema>

@@ -1,0 +1,13 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/packages
+/.vs
+/StefaniniPruebaTecnica.Infrastructure/obj/Debug
+/StefaniniPruebaTecnica.Infrastructure/obj/Release
+/StefaniniPruebaTecnica.Services/obj
+/StefaniniPruebaTecnica.Transverse/obj
+/StefaniniPruebaTecnica.UnitTestProject/obj
+/StefaniniPruebaTecnica.WebApi/obj
+/StefaniniPruebaTecnica.WebApi/Properties/ServiceDependencies/PlataformaCempreWebApi - Azure Deploy

@@ -1,0 +1,44 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="OpheliaDBModelStoreContainer" CdmEntityContainer="OpheliaDBEntities">
+    <EntitySetMapping Name="Cliente">
+      <EntityTypeMapping TypeName="OpheliaDBModel.Cliente">
+        <MappingFragment StoreEntitySet="Cliente">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+          <ScalarProperty Name="Edad" ColumnName="Edad" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Producto">
+      <EntityTypeMapping TypeName="OpheliaDBModel.Producto">
+        <MappingFragment StoreEntitySet="Producto">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+          <ScalarProperty Name="Precio" ColumnName="Precio" />
+          <ScalarProperty Name="Cantidad" ColumnName="Cantidad" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Venta">
+      <EntityTypeMapping TypeName="OpheliaDBModel.Venta">
+        <MappingFragment StoreEntitySet="Venta">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="ClienteId" ColumnName="ClienteId" />
+          <ScalarProperty Name="ProductoId" ColumnName="ProductoId" />
+          <ScalarProperty Name="Fecha" ColumnName="Fecha" />
+          <ScalarProperty Name="Cantidad" ColumnName="Cantidad" />
+          <ScalarProperty Name="SubTotal" ColumnName="SubTotal" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <FunctionImportMapping FunctionImportName="ObtenerVentasPorAnio" FunctionName="OpheliaDBModel.Store.ObtenerVentasPorAnio">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="OpheliaDBModel.VentasPorAnio">
+          <ScalarProperty Name="Producto" ColumnName="Producto" />
+          <ScalarProperty Name="TotalVendido" ColumnName="TotalVendido" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+  </EntityContainerMapping>
+</Mapping>

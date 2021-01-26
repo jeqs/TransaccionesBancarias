@@ -1,0 +1,410 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="StefaniniDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Banco">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Nombre" Type="varchar" MaxLength="256" />
+        </EntityType>
+        <EntityType Name="Cliente">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Nombre" Type="varchar" MaxLength="256" />
+          <Property Name="Apellido" Type="varchar" MaxLength="256" />
+        </EntityType>
+        <EntityType Name="CuentaBancaria">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="BancoId" Type="int" />
+          <Property Name="Nombre" Type="varchar" MaxLength="256" />
+          <Property Name="ClienteId" Type="int" />
+          <Property Name="TipoCuentaId" Type="int" />
+        </EntityType>
+        <EntityType Name="TipoCuentaBancaria">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Nombre" Type="varchar" MaxLength="256" />
+          <Property Name="Estado" Type="int" />
+        </EntityType>
+        <EntityType Name="TipoTransaccion">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Nombre" Type="varchar" MaxLength="256" />
+          <Property Name="Estado" Type="int" />
+        </EntityType>
+        <EntityType Name="Transaccion">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CuentaBancariaId" Type="int" />
+          <Property Name="TipoTransaccionId" Type="int" />
+          <Property Name="Monto" Type="decimal" Precision="18" Scale="0" />
+          <Property Name="GMF" Type="decimal" Precision="18" Scale="0" />
+        </EntityType>
+        <Association Name="FK_CuentaBancaria_Banco">
+          <End Role="Banco" Type="Self.Banco" Multiplicity="0..1" />
+          <End Role="CuentaBancaria" Type="Self.CuentaBancaria" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Banco">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CuentaBancaria">
+              <PropertyRef Name="BancoId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CuentaBancaria_Cliente">
+          <End Role="Cliente" Type="Self.Cliente" Multiplicity="0..1" />
+          <End Role="CuentaBancaria" Type="Self.CuentaBancaria" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Cliente">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CuentaBancaria">
+              <PropertyRef Name="ClienteId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CuentaBancaria_TipoCuentaBancaria">
+          <End Role="TipoCuentaBancaria" Type="Self.TipoCuentaBancaria" Multiplicity="0..1" />
+          <End Role="CuentaBancaria" Type="Self.CuentaBancaria" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TipoCuentaBancaria">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CuentaBancaria">
+              <PropertyRef Name="TipoCuentaId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Transaccion_CuentaBancaria">
+          <End Role="CuentaBancaria" Type="Self.CuentaBancaria" Multiplicity="0..1" />
+          <End Role="Transaccion" Type="Self.Transaccion" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CuentaBancaria">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Transaccion">
+              <PropertyRef Name="CuentaBancariaId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Transaccion_TipoTransaccion">
+          <End Role="TipoTransaccion" Type="Self.TipoTransaccion" Multiplicity="0..1" />
+          <End Role="Transaccion" Type="Self.Transaccion" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TipoTransaccion">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Transaccion">
+              <PropertyRef Name="TipoTransaccionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Function Name="ObtenerTransacciones" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <EntityContainer Name="StefaniniDBModelStoreContainer">
+          <EntitySet Name="Banco" EntityType="Self.Banco" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Cliente" EntityType="Self.Cliente" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CuentaBancaria" EntityType="Self.CuentaBancaria" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TipoCuentaBancaria" EntityType="Self.TipoCuentaBancaria" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TipoTransaccion" EntityType="Self.TipoTransaccion" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Transaccion" EntityType="Self.Transaccion" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_CuentaBancaria_Banco" Association="Self.FK_CuentaBancaria_Banco">
+            <End Role="Banco" EntitySet="Banco" />
+            <End Role="CuentaBancaria" EntitySet="CuentaBancaria" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CuentaBancaria_Cliente" Association="Self.FK_CuentaBancaria_Cliente">
+            <End Role="Cliente" EntitySet="Cliente" />
+            <End Role="CuentaBancaria" EntitySet="CuentaBancaria" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CuentaBancaria_TipoCuentaBancaria" Association="Self.FK_CuentaBancaria_TipoCuentaBancaria">
+            <End Role="TipoCuentaBancaria" EntitySet="TipoCuentaBancaria" />
+            <End Role="CuentaBancaria" EntitySet="CuentaBancaria" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Transaccion_CuentaBancaria" Association="Self.FK_Transaccion_CuentaBancaria">
+            <End Role="CuentaBancaria" EntitySet="CuentaBancaria" />
+            <End Role="Transaccion" EntitySet="Transaccion" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Transaccion_TipoTransaccion" Association="Self.FK_Transaccion_TipoTransaccion">
+            <End Role="TipoTransaccion" EntitySet="TipoTransaccion" />
+            <End Role="Transaccion" EntitySet="Transaccion" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="StefaniniDBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Cliente">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Nombre" Type="String" MaxLength="256" FixedLength="false" Unicode="false" />
+          <Property Name="Apellido" Type="String" MaxLength="256" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="CuentaBancaria" Relationship="StefaniniDBModel.FK_CuentaBancaria_Cliente" FromRole="Cliente" ToRole="CuentaBancaria" />
+        </EntityType>
+        <EntityType Name="TipoCuentaBancaria">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Nombre" Type="String" MaxLength="256" FixedLength="false" Unicode="false" />
+          <Property Name="Estado" Type="Int32" />
+          <NavigationProperty Name="CuentaBancaria" Relationship="StefaniniDBModel.FK_CuentaBancaria_TipoCuentaBancaria" FromRole="TipoCuentaBancaria" ToRole="CuentaBancaria" />
+        </EntityType>
+        <EntityType Name="TipoTransaccion">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Nombre" Type="String" MaxLength="256" FixedLength="false" Unicode="false" />
+          <Property Name="Estado" Type="Int32" />
+          <NavigationProperty Name="Transaccion" Relationship="StefaniniDBModel.FK_Transaccion_TipoTransaccion" FromRole="TipoTransaccion" ToRole="Transaccion" />
+        </EntityType>
+        <EntityContainer Name="StefaniniDBEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Cliente" EntityType="Self.Cliente" />
+          <EntitySet Name="TipoCuentaBancaria" EntityType="Self.TipoCuentaBancaria" />
+          <EntitySet Name="TipoTransaccion" EntityType="Self.TipoTransaccion" />
+          <EntitySet Name="Banco" EntityType="StefaniniDBModel.Banco" />
+          <EntitySet Name="CuentaBancaria" EntityType="StefaniniDBModel.CuentaBancaria" />
+          <AssociationSet Name="FK_CuentaBancaria_Banco" Association="StefaniniDBModel.FK_CuentaBancaria_Banco">
+            <End Role="Banco" EntitySet="Banco" />
+            <End Role="CuentaBancaria" EntitySet="CuentaBancaria" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CuentaBancaria_Cliente" Association="StefaniniDBModel.FK_CuentaBancaria_Cliente">
+            <End Role="Cliente" EntitySet="Cliente" />
+            <End Role="CuentaBancaria" EntitySet="CuentaBancaria" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CuentaBancaria_TipoCuentaBancaria" Association="StefaniniDBModel.FK_CuentaBancaria_TipoCuentaBancaria">
+            <End Role="TipoCuentaBancaria" EntitySet="TipoCuentaBancaria" />
+            <End Role="CuentaBancaria" EntitySet="CuentaBancaria" />
+          </AssociationSet>
+          <EntitySet Name="Transaccion" EntityType="StefaniniDBModel.Transaccion" />
+          <AssociationSet Name="FK_Transaccion_CuentaBancaria" Association="StefaniniDBModel.FK_Transaccion_CuentaBancaria">
+            <End Role="CuentaBancaria" EntitySet="CuentaBancaria" />
+            <End Role="Transaccion" EntitySet="Transaccion" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Transaccion_TipoTransaccion" Association="StefaniniDBModel.FK_Transaccion_TipoTransaccion">
+            <End Role="TipoTransaccion" EntitySet="TipoTransaccion" />
+            <End Role="Transaccion" EntitySet="Transaccion" />
+          </AssociationSet>
+          <FunctionImport Name="ObtenerTransacciones" ReturnType="Collection(StefaniniDBModel.Transacciones)" />
+        </EntityContainer>
+        <EntityType Name="Banco">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Nombre" Type="String" MaxLength="256" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="CuentaBancaria" Relationship="StefaniniDBModel.FK_CuentaBancaria_Banco" FromRole="Banco" ToRole="CuentaBancaria" />
+        </EntityType>
+        <EntityType Name="CuentaBancaria">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="BancoId" Type="Int32" />
+          <Property Name="Nombre" Type="String" MaxLength="256" FixedLength="false" Unicode="false" />
+          <Property Name="ClienteId" Type="Int32" />
+          <Property Name="TipoCuentaId" Type="Int32" />
+          <NavigationProperty Name="Banco" Relationship="StefaniniDBModel.FK_CuentaBancaria_Banco" FromRole="CuentaBancaria" ToRole="Banco" />
+          <NavigationProperty Name="Cliente" Relationship="StefaniniDBModel.FK_CuentaBancaria_Cliente" FromRole="CuentaBancaria" ToRole="Cliente" />
+          <NavigationProperty Name="TipoCuentaBancaria" Relationship="StefaniniDBModel.FK_CuentaBancaria_TipoCuentaBancaria" FromRole="CuentaBancaria" ToRole="TipoCuentaBancaria" />
+          <NavigationProperty Name="Transaccion" Relationship="StefaniniDBModel.FK_Transaccion_CuentaBancaria" FromRole="CuentaBancaria" ToRole="Transaccion" />
+        </EntityType>
+        <Association Name="FK_CuentaBancaria_Banco">
+          <End Type="StefaniniDBModel.Banco" Role="Banco" Multiplicity="0..1" />
+          <End Type="StefaniniDBModel.CuentaBancaria" Role="CuentaBancaria" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Banco">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CuentaBancaria">
+              <PropertyRef Name="BancoId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CuentaBancaria_Cliente">
+          <End Type="StefaniniDBModel.Cliente" Role="Cliente" Multiplicity="0..1" />
+          <End Type="StefaniniDBModel.CuentaBancaria" Role="CuentaBancaria" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Cliente">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CuentaBancaria">
+              <PropertyRef Name="ClienteId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CuentaBancaria_TipoCuentaBancaria">
+          <End Type="StefaniniDBModel.TipoCuentaBancaria" Role="TipoCuentaBancaria" Multiplicity="0..1" />
+          <End Type="StefaniniDBModel.CuentaBancaria" Role="CuentaBancaria" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TipoCuentaBancaria">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CuentaBancaria">
+              <PropertyRef Name="TipoCuentaId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="Transaccion">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CuentaBancariaId" Type="Int32" />
+          <Property Name="TipoTransaccionId" Type="Int32" />
+          <Property Name="Monto" Type="Decimal" Precision="18" Scale="0" />
+          <Property Name="GMF" Type="Decimal" Precision="18" Scale="0" />
+          <NavigationProperty Name="CuentaBancaria" Relationship="StefaniniDBModel.FK_Transaccion_CuentaBancaria" FromRole="Transaccion" ToRole="CuentaBancaria" />
+          <NavigationProperty Name="TipoTransaccion" Relationship="StefaniniDBModel.FK_Transaccion_TipoTransaccion" FromRole="Transaccion" ToRole="TipoTransaccion" />
+        </EntityType>
+        <Association Name="FK_Transaccion_CuentaBancaria">
+          <End Type="StefaniniDBModel.CuentaBancaria" Role="CuentaBancaria" Multiplicity="0..1" />
+          <End Type="StefaniniDBModel.Transaccion" Role="Transaccion" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CuentaBancaria">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Transaccion">
+              <PropertyRef Name="CuentaBancariaId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Transaccion_TipoTransaccion">
+          <End Type="StefaniniDBModel.TipoTransaccion" Role="TipoTransaccion" Multiplicity="0..1" />
+          <End Type="StefaniniDBModel.Transaccion" Role="Transaccion" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TipoTransaccion">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Transaccion">
+              <PropertyRef Name="TipoTransaccionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <ComplexType Name="Transacciones">
+          <Property Type="Int32" Name="Id" Nullable="false" />
+          <Property Type="Int32" Name="CuentaBancariaId" Nullable="true" />
+          <Property Type="Int32" Name="TipoTransaccionId" Nullable="true" />
+          <Property Type="Decimal" Name="Monto" Nullable="true" Precision="18" Scale="0" />
+          <Property Type="Decimal" Name="GMF" Nullable="true" Precision="18" Scale="0" />
+          <Property Type="String" Name="TipoTransaccion" Nullable="true" MaxLength="256" />
+          <Property Type="String" Name="CuentaBancaria" Nullable="true" MaxLength="256" />
+        </ComplexType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="StefaniniDBModelStoreContainer" CdmEntityContainer="StefaniniDBEntities">
+          <EntitySetMapping Name="Cliente">
+            <EntityTypeMapping TypeName="StefaniniDBModel.Cliente">
+              <MappingFragment StoreEntitySet="Cliente">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="Apellido" ColumnName="Apellido" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TipoCuentaBancaria">
+            <EntityTypeMapping TypeName="StefaniniDBModel.TipoCuentaBancaria">
+              <MappingFragment StoreEntitySet="TipoCuentaBancaria">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="Estado" ColumnName="Estado" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TipoTransaccion">
+            <EntityTypeMapping TypeName="StefaniniDBModel.TipoTransaccion">
+              <MappingFragment StoreEntitySet="TipoTransaccion">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="Estado" ColumnName="Estado" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Banco">
+            <EntityTypeMapping TypeName="StefaniniDBModel.Banco">
+              <MappingFragment StoreEntitySet="Banco">
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CuentaBancaria">
+            <EntityTypeMapping TypeName="StefaniniDBModel.CuentaBancaria">
+              <MappingFragment StoreEntitySet="CuentaBancaria">
+                <ScalarProperty Name="TipoCuentaId" ColumnName="TipoCuentaId" />
+                <ScalarProperty Name="ClienteId" ColumnName="ClienteId" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="BancoId" ColumnName="BancoId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Transaccion">
+            <EntityTypeMapping TypeName="StefaniniDBModel.Transaccion">
+              <MappingFragment StoreEntitySet="Transaccion">
+                <ScalarProperty Name="GMF" ColumnName="GMF" />
+                <ScalarProperty Name="Monto" ColumnName="Monto" />
+                <ScalarProperty Name="TipoTransaccionId" ColumnName="TipoTransaccionId" />
+                <ScalarProperty Name="CuentaBancariaId" ColumnName="CuentaBancariaId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="ObtenerTransacciones" FunctionName="StefaniniDBModel.Store.ObtenerTransacciones">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="StefaniniDBModel.Transacciones">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="CuentaBancariaId" ColumnName="CuentaBancariaId" />
+                <ScalarProperty Name="TipoTransaccionId" ColumnName="TipoTransaccionId" />
+                <ScalarProperty Name="Monto" ColumnName="Monto" />
+                <ScalarProperty Name="GMF" ColumnName="GMF" />
+                <ScalarProperty Name="TipoTransaccion" ColumnName="TipoTransaccion" />
+                <ScalarProperty Name="CuentaBancaria" ColumnName="CuentaBancaria" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
