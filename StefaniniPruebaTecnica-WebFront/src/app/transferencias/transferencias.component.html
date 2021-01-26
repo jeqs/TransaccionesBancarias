@@ -1,0 +1,105 @@
+<form autocomplete="off" novalidate [formGroup]="formTransferencias" (ngSubmit)="obtenerTransferencias()">
+  <h3>Transferencias</h3>
+  <div class="dx-fieldset">
+    <div class="dx-field">
+      <div class="dx-field-label">Cuenta Origen</div>
+      <div class="dx-field-value">
+        <dx-select-box 
+          [dataSource]="cuentasBancarias"
+          displayExpr="Nombre" 
+          valueExpr="Id"
+          placeholder="Seleccione la cuenta Origen" 
+          [showClearButton]="true" 
+          (onValueChanged)="seleccionarCuenta($event)"
+          formControlName="cuentaOrigenId">
+        </dx-select-box>
+      </div>
+    </div>
+    <div class="dx-field">
+      <div class="dx-field-label">Cuenta Destino</div>
+      <div class="dx-field-value">
+        <dx-select-box 
+          [dataSource]="cuentasBancarias" 
+          displayExpr="Nombre" 
+          valueExpr="Id"
+          placeholder="Seleccione la cuenta Destino" 
+          [showClearButton]="true"
+          (onValueChanged)="seleccionarCuenta($event)"
+          formControlName="cuentaDestinoId">
+        </dx-select-box>
+      </div>
+    </div>
+    <div class="dx-field">
+      <div class="dx-field-label">Monto a Transferir</div>
+      <div class="dx-field-value">
+        <dx-number-box 
+          [min]="0" 
+          [showSpinButtons]="true" 
+          [step]="1000"
+          formControlName="montoTransferir">
+        </dx-number-box>
+      </div>
+    </div>
+    <div class="dx-fieldset-btn">
+      <dx-button
+          stylingMode="contained"
+          text="Transferir"
+          [width]="120"
+          type="button"
+          (onClick)="transferir($event)">
+      </dx-button>
+    </div>
+  </div>
+  <h3>Retiros</h3>
+  <div class="dx-fieldset">
+    <div class="dx-field">
+      <div class="dx-field-label">Cuenta Origen</div>
+      <div class="dx-field-value">
+        <dx-select-box 
+          [dataSource]="cuentasBancarias"
+          displayExpr="Nombre" 
+          valueExpr="Id"
+          placeholder="Seleccione la cuenta Origen" 
+          [showClearButton]="true" 
+          (onValueChanged)="seleccionarCuenta($event)"
+          formControlName="cuentaRetiroId">
+        </dx-select-box>
+      </div>
+    </div>
+    <div class="dx-field">
+      <div class="dx-field-label">Monto a Retirar</div>
+      <div class="dx-field-value">
+        <dx-number-box 
+          [min]="0" 
+          [showSpinButtons]="true" 
+          [step]="1000"
+          formControlName="montoRetirar">
+        </dx-number-box>
+      </div>
+    </div>
+    <div class="dx-fieldset-btn">
+      <dx-button
+          stylingMode="contained"
+          text="Retirar"
+          [width]="120"
+          type="button"
+          (onClick)="retirar($event)">
+      </dx-button>
+    </div>
+  </div>
+</form>
+
+<h3>Transacciones</h3>
+<dx-data-grid id="gridTransacciones" 
+  [dataSource]="dataSource" 
+  [remoteOperations]="false"
+  [allowColumnReordering]="true" 
+  [rowAlternationEnabled]="true" 
+  [showBorders]="true">
+  <dxo-paging [pageSize]="10"></dxo-paging>
+  <dxo-pager [showPageSizeSelector]="true" [allowedPageSizes]="[10, 25, 50, 100]"></dxo-pager>
+  <dxi-column dataField="CuentaBancaria" dataType="string" alignment="center"></dxi-column>
+  <dxi-column dataField="Monto" dataType="number" alignment="center" format="currency"></dxi-column>
+  <dxi-column dataField="GMF" dataType="number" alignment="center" format="currency"></dxi-column>
+  <dxi-column dataField="TipoTransaccion" dataType="string" alignment="center"></dxi-column>
+</dx-data-grid>
